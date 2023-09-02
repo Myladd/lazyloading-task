@@ -5,16 +5,22 @@ import ProductsLayout from "./layouts/ProductsLayout";
 import { QueryClient, QueryClientProvider } from "react-query";
 import BuildUpLoading from "./components/BuildUpLoading";
 
-const queryClient = new QueryClient();
-const LazyLoad = lazy(() => import("./features/products/ProductsList"))
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      suspense: true,
+    },
+  },
+});
+const LazyLoad = lazy(() => import("./features/products/ProductsList"));
 
 function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <ProductsLayout />
-        <Suspense fallback={<BuildUpLoading/>}>
-          <LazyLoad/>
+        <Suspense fallback={<BuildUpLoading />}>
+          <LazyLoad />
         </Suspense>
       </QueryClientProvider>
     </>
